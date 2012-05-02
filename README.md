@@ -6,7 +6,9 @@ Give some color to your (remote) TTY!!
 Usage
 ----------
 
-Currently there is only one way to use it:
+Currently there are two way to use it:
+
+### Rendering the output ###
 
 	:::
 		$ command to execute | colorize.py
@@ -15,6 +17,15 @@ If you need to render both the stdout and the stderr:
 
 	:::
 		$ command to execute |& colorize.py
+
+This method works well with too long outputs
+
+### As runner ###
+
+	:::
+		$ colorize.py command to execute
+
+This method can do disgusting things with too long outputs.
 
 
 Configuration File
