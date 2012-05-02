@@ -92,7 +92,16 @@ class Colorize(object):
     def run(self):
         self.compile_regexps()
 
-        for line in sys.stdin:
+        if len(sys.argv) == 1:
+            self.process_stream(sys.stdin)
+        else:
+            process = subprocess.Popen(sys.argv[1:], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            stdout, stderr = process.communicate()
+            self.process_stream(stderr.splitlines())
+            self.process_stream(stdout.splitlines())
+
+    def process_stream(self, stream):
+        for line in stream:
             print self.replace(line.rstrip())
 
     def compile_regexps(self):

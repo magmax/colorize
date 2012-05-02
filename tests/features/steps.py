@@ -15,7 +15,7 @@ def before(sc):
     scc.tmp_file = []
     scc.cwd = os.getcwd()
     scc.stdout = None
-    scc.stderr
+    scc.stderr = None
     scc.status = None
 
 # AFTER
@@ -61,7 +61,7 @@ def run_stdin(input_stream):
     scc.stdout, scc.stderr = process.communicate()
     scc.status = process.returncode
 
-@When('I run colorize')
+@When('I run colorize (.*)')
 def run_colorize(args):
     args_list = shlex.split(args)
     command = ['./colorize/colorize.py'] + args_list
