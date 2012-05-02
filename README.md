@@ -39,7 +39,11 @@ It will find a configuration file in the current directory, in the home director
 
 The format for this file is very easy: it is a CSV file with next fields:
 
-| regular expression to highlight (quoted) | bold output | foreground color | background color |
+|          | regular expression to highlight (quoted) | bold output | foreground color | background color |
+| Example: | "^=+$"                                   | 1           | white            |                  |
+| Example: | "^=+$"                                   | true        | white            | black            |
+| Example: | "^=+$"                                   | 0           | red              | white            |
+| Example: | "^=+$"                                   | false       | brown            | magenta          |
 
 Available colors:
 
