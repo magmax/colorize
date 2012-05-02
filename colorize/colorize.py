@@ -4,10 +4,11 @@ import os
 import sys
 import re
 import csv
+import subprocess
 
 APP_NAME = 'colorize'
 APP_DESC = 'Colorizes the output of any command'
-APP_VERSION = '0.0.0.1'
+APP_VERSION = '0.0.0.2'
 
 class Color(object):
     NORMAL = '\033[m'
@@ -54,7 +55,7 @@ class Configuration(object):
                 break;
 
     def configfile_currentdir(self):
-        return '.{}rc'.format(APP_NAME)
+        return '.{}.conf'.format(APP_NAME)
 
     def configfile_home(self):
         return os.path.expanduser('~/.configuration/{0}/{0}.conf'.format(APP_NAME))

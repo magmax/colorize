@@ -11,4 +11,4 @@ Feature:
     | input        | output    |
     | example      | example   |
     | failure      | failure   |
-    | FAILURE      | \x1b[0;37;41mFAILURE\x1b[m   |
+    | FAILURE      | \x1b[1;37;41mFAILURE\x1b[m   |

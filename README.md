@@ -20,7 +20,11 @@ If you need to render both the stdout and the stderr:
 Configuration File
 ----------
 
-It will find a configuration file in the current directory, in the home directory or in the default path directory. The first one found will be used.
+It will find a configuration file in the current directory, in the home directory or in the default path directory. The first one found will be used. So, it will search for:
+
+- *./.colorize.conf*
+- *$HOME/.configuration/colorize/colorize.conf*
+- */etc/colorize/colorize.conf*
 
 The format for this file is very easy: it is a CSV file with next fields:
 
