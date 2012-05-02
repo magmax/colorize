@@ -1,3 +1,5 @@
+-*- markdown -*-
+
 Colorize
 ==========
 
@@ -22,15 +24,16 @@ The format for this file is very easy: it is a CSV file with next fields:
 | regular expression to highlight (quoted) | bold output | foreground color | background color |
 
 Available colors:
-- black
-- white
-- red
-- green
-- blue
-- brown
-- gray
-- magenta
-- cyan
+
+- *black*
+  white
+  red
+  green
+  blue
+  brown
+  gray
+  magenta
+  cyan
 
 And that's all.
 
