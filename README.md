@@ -1,5 +1,3 @@
--*- markdown -*-
-
 Colorize
 ==========
 
@@ -26,14 +24,14 @@ The format for this file is very easy: it is a CSV file with next fields:
 Available colors:
 
 - *black*
-  white
-  red
-  green
-  blue
-  brown
-  gray
-  magenta
-  cyan
+- *white*
+- *red*
+- *green*
+- *blue*
+- *brown*
+- *gray*
+- *magenta*
+- *cyan*
 
 And that's all.
 
