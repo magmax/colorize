@@ -1,1 +1,16 @@
-'FAILURE', True, white, red
+# configuration for nose
+"FAILURE", 1, white, red
+
+
+# configuration to simulate colordiff
+"^>.*", 0, blue
+"^<.*", 0, red
+"^\d+,?\d*c\d+,?\d*$", 0, magenta
+
+
+# configuration for git status
+"^#\s+modified:.*", true, red
+"^# On branch .*", true, green
+"^# Changes to be committed:", false, green
+"^# Changes not staged for commit:", false, green
+"^#\s+\(use .*", false, blue

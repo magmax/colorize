@@ -66,13 +66,19 @@ class Configuration(object):
         with file(filename) as fd:
             reader = csv.reader(fd)
             for row in reader:
+                if not row or (row[0] and row[0][0] == '#'):
+                    continue
+
                 row += 5*[None]
 
                 regexp = row[0]
-                bold = row[1].strip()
-                foreground = row[2].strip()
-                background = row[3].strip()
-                color = Color(bold, foreground, background)
+                color = Color()
+                if row[1]:
+                    color.bold = row[1].strip().lower() in ['1', 'true']
+                if row[2]:
+                    color.foreground = row[2].strip()
+                if row[3]:
+                    color.background = row[3].strip()
 
                 self.regexp[regexp] = color
 
@@ -90,7 +96,7 @@ class Colorize(object):
 
     def compile_regexps(self):
         for exp, color in self.regexp.items():
-            self.regexps['(' + exp[1:-1] + ')'] = str(color) + '\\1' + Color.NORMAL
+            self.regexps['(' + exp + ')'] = str(color) + '\\1' + Color.NORMAL
 
     def replace(self, line):
         result = line
