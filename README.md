@@ -11,6 +11,11 @@ Currently there is only one way to use it:
 	:::
 		$ command to execute | colorize.py
 
+If you need to render both the stdout and the stderr:
+
+	:::
+		$ command to execute |& colorize.py
+
 
 Configuration File
 ----------
