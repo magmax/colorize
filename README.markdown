@@ -39,11 +39,12 @@ It will find a configuration file in the current directory, in the home director
 
 The format for this file is very easy: it is a CSV file with next fields:
 
-| .        | regular expression to highlight (quoted) | bold output | foreground color | background color |
-| Example: | "^=+$"                                   | 1           | white            |                  |
-| Example: | "^=+$"                                   | true        | white            | black            |
-| Example: | "^=+$"                                   | 0           | red              | white            |
-| Example: | "^=+$"                                   | false       | brown            | magenta          |
+    :::
+		# regular expression to highlight (quoted) , bold output , foreground color , background color
+		  "^=+$"                                   , 1           , white            ,
+		  "^=+$"                                   , true        , white            , black
+		  "^=+$"                                   , 0           , red              , white
+		  "^=+$"                                   , false       , brown            , magenta
 
 Available colors:
 
@@ -63,8 +64,8 @@ Example to simulate colordiff
 ----------
 
 	:::
-		"^>.*", 0, blue
-		"^<.*", 0, red
+		"^>.*",                0, blue
+		"^<.*",                0, red
 		"^\d+,?\d*c\d+,?\d*$", 0, magenta
 
 That's enough :D
