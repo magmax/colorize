@@ -143,7 +143,9 @@ class Colorize(object):
 
     def compile_regexps(self):
         for exp, color in self.regexp.items():
-            self.regexps['(' + exp + ')'] = str(color) + '\\1' + Color.NORMAL
+            regexp = '(' + exp + ')'
+            compiled = re.compile(regexp)
+            self.regexps[compiled] = str(color) + '\\1' + Color.NORMAL
 
     def replace(self, line):
         result = line
