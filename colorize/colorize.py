@@ -13,17 +13,17 @@ APP_DESC = 'Colorizes the output of any command'
 APP_VERSION = '0.0.0.3'
 
 class Color(object):
-    NORMAL = '\033[m'
     COLOR = '\033[{}m'
+    NORMAL = COLOR.format('')
     colors = {
-	'black':       '0',
-	'red':         '1',
-	'green':       '2',
-	'brown':       '3',
-	'blue':        '4',
-	'magenta':     '5',
-	'cyan':        '6',
-	'white':       '7',
+        'black':       '0',
+        'red':         '1',
+        'green':       '2',
+        'brown':       '3',
+        'blue':        '4',
+        'magenta':     '5',
+        'cyan':        '6',
+        'white':       '7',
         }
 
     def __init__(self, bold=False, foreground=None, background=None):
@@ -33,17 +33,25 @@ class Color(object):
 
     def __str__(self):
         properties = []
-        if self.bold:
-            properties.append('1')
-        else:
-            properties.append('0')
 
+        properties.append(self.__getBoldString())
         if self.foreground:
-            properties.append('3' + self.colors[self.foreground])
+            properties.append(self.__getForegroundString())
         if self.background:
-            properties.append('4' + self.colors[self.background])
+            properties.append(self.__getBackgroundString())
 
         return self.COLOR.format(';'.join(properties))
+
+    def __getBoldString(self):
+        if self.bold:
+            return '1'
+        return '0'
+
+    def __getForegroundString(self):
+        return '3' + self.colors[self.foreground]
+
+    def __getBackgroundString(self):
+        return '4' + self.colors[self.background]
 
 
 class Configuration(object):
@@ -72,7 +80,7 @@ class Configuration(object):
                 if not row or (row[0] and row[0][0] == '#'):
                     continue
 
-                row += 5*[None]
+                row += 4*[None]
 
                 regexp = row[0]
                 color = Color()
@@ -84,6 +92,7 @@ class Configuration(object):
                     color.background = row[3].strip()
 
                 self.regexp[regexp] = color
+
 
 class PrinterThread(Thread):
     def __init__(self, fdin, regexps):
@@ -102,7 +111,7 @@ class PrinterThread(Thread):
     def replace(self, line):
         result = line
         for exp, color in self.regexps.items():
-            result = re.subn(exp, color, result )[0]
+            result, _ = re.subn(exp, color, result)
         return result
 
     def flush(self):
@@ -127,18 +136,17 @@ class Colorize(object):
             process.wait()
             outpid.flush()
             errpid.flush()
-            return
 
     def compile_regexps(self):
         for exp, color in self.regexp.items():
-            regexp = '(' + exp + ')'
+            regexp = '({})'.format(exp)
             compiled = re.compile(regexp)
-            self.regexps[compiled] = str(color) + '\\1' + Color.NORMAL
+            self.regexps[compiled] = '{}\\1{}'.format(color, Color.NORMAL)
 
     def replace(self, line):
         result = line
         for exp, color in self.regexps.items():
-            result = re.subn(exp, color, result )[0]
+            result, _ = re.subn(exp, color, result )
         return result
 
 def main():
