@@ -6,6 +6,7 @@ import re
 import csv
 import thread
 import subprocess
+from threading import Thread
 
 APP_NAME = 'colorize'
 APP_DESC = 'Colorizes the output of any command'
@@ -84,6 +85,28 @@ class Configuration(object):
 
                 self.regexp[regexp] = color
 
+class PrinterThread(Thread):
+    def __init__(self, fdin, regexps):
+        super(PrinterThread, self).__init__()
+        self.fdin = fdin
+        self.regexps = regexps
+        self.start()
+
+    def run(self):
+        while True:
+            line = self.fdin.readline().rstrip()
+            if not line:
+                break
+            print self.replace(line)
+
+    def replace(self, line):
+        result = line
+        for exp, color in self.regexps.items():
+            result = re.subn(exp, color, result )[0]
+        return result
+
+    def flush(self):
+        Thread.join(self, 2)
 
 class Colorize(object):
     def __init__(self, config):
@@ -94,8 +117,17 @@ class Colorize(object):
         self.compile_regexps()
 
         if len(sys.argv) == 1:
-            self.process_stream(sys.stdin)
+            #self.process_stream(sys.stdin)
+            colorizer = PrinterThread(sys.stdin, self.regexps)
+            colorizer.flush()
         else:
+            process = subprocess.Popen(sys.argv[1:], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            outpid = PrinterThread(process.stdout, self.regexps)
+            errpid = PrinterThread(process.stderr, self.regexps)
+            process.wait()
+            outpid.flush()
+            errpid.flush()
+            return
             process = subprocess.Popen(sys.argv[1:], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             outpid = thread.start_new_thread(self.process_stream, (process.stdout,))
             errpid = thread.start_new_thread(self.process_stream, (process.stderr,))
