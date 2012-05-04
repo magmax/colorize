@@ -93,11 +93,11 @@ class PrinterThread(Thread):
         self.start()
 
     def run(self):
-        while True:
-            line = self.fdin.readline().rstrip()
-            if not line:
+        while not self.fdin.closed:
+            line = self.fdin.readline()
+            if line == '':
                 break
-            print self.replace(line)
+            print self.replace(line.rstrip())
 
     def replace(self, line):
         result = line
@@ -106,7 +106,8 @@ class PrinterThread(Thread):
         return result
 
     def flush(self):
-        Thread.join(self, 2)
+        Thread.join(self, 1)
+
 
 class Colorize(object):
     def __init__(self, config):
@@ -117,7 +118,6 @@ class Colorize(object):
         self.compile_regexps()
 
         if len(sys.argv) == 1:
-            #self.process_stream(sys.stdin)
             colorizer = PrinterThread(sys.stdin, self.regexps)
             colorizer.flush()
         else:
@@ -128,18 +128,6 @@ class Colorize(object):
             outpid.flush()
             errpid.flush()
             return
-            process = subprocess.Popen(sys.argv[1:], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            outpid = thread.start_new_thread(self.process_stream, (process.stdout,))
-            errpid = thread.start_new_thread(self.process_stream, (process.stderr,))
-            process.wait()
-
-    def process_stream(self, stream):
-        while True:
-            line = stream.readline().rstrip()
-            if not line:
-                break
-            print self.replace(line)
-
 
     def compile_regexps(self):
         for exp, color in self.regexp.items():
