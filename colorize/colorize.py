@@ -4,11 +4,12 @@ import os
 import sys
 import re
 import csv
+import thread
 import subprocess
 
 APP_NAME = 'colorize'
 APP_DESC = 'Colorizes the output of any command'
-APP_VERSION = '0.0.0.2'
+APP_VERSION = '0.0.0.3'
 
 class Color(object):
     NORMAL = '\033[m'
@@ -58,7 +59,7 @@ class Configuration(object):
         return '.{}.conf'.format(APP_NAME)
 
     def configfile_home(self):
-        return os.path.expanduser('~/.configuration/{0}/{0}.conf'.format(APP_NAME))
+        return os.path.expanduser('~/.config/{0}/{0}.conf'.format(APP_NAME))
 
     def configfile_default(self):
         return '/etc/{0}/{0}.conf'.format(APP_NAME)
@@ -96,13 +97,17 @@ class Colorize(object):
             self.process_stream(sys.stdin)
         else:
             process = subprocess.Popen(sys.argv[1:], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            stdout, stderr = process.communicate()
-            self.process_stream(stderr.splitlines())
-            self.process_stream(stdout.splitlines())
+            outpid = thread.start_new_thread(self.process_stream, (process.stdout,))
+            errpid = thread.start_new_thread(self.process_stream, (process.stderr,))
+            process.wait()
 
     def process_stream(self, stream):
-        for line in stream:
-            print self.replace(line.rstrip())
+        while True:
+            line = stream.readline().rstrip()
+            if not line:
+                break
+            print self.replace(line)
+
 
     def compile_regexps(self):
         for exp, color in self.regexp.items():
