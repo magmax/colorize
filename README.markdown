@@ -69,3 +69,4 @@ Example to simulate colordiff
 		"^\d+,?\d*c\d+,?\d*$", 0, magenta
 
 That's enough :D
+
