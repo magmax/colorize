@@ -27,6 +27,7 @@ APP_NAME = 'colorize'
 APP_DESC = 'Colorizes the output of any command'
 APP_VERSION = '0.0.0.3'
 
+
 class Color(object):
     COLOR = '\033[{}m'
     NORMAL = COLOR.format('')
@@ -137,6 +138,7 @@ class Colorize(object):
     def __init__(self, config):
         self.regexp = config.regexp
         self.regexps = {}
+        self.return_code = 0
 
     def run(self):
         self.compile_regexps()
@@ -151,6 +153,7 @@ class Colorize(object):
             process.wait()
             outpid.flush()
             errpid.flush()
+            self.return_code = process.returncode
 
     def compile_regexps(self):
         for exp, color in self.regexp.items():
@@ -169,6 +172,7 @@ def main():
     conf.process()
     colorize = Colorize(conf)
     colorize.run()
+    sys.exit(colorize.return_code)
 
 if __name__ == '__main__':
     main()

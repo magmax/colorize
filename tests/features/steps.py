@@ -79,6 +79,10 @@ def check_status(exp_status):
         print scc.exception
         raise Exception("Failed with exit status %d\nOUTPUT:\n%s" % (scc.status, scc.stdout))
 
+@Then('it should return (\d+)$')
+def check_status_given(rc):
+    assert_equals(scc.status, int(rc))
+
 @Then('output is "(.*)"$')
 def check_output0(exp_output):
     assert_equals(normalize(exp_output), scc.stdout.strip())
