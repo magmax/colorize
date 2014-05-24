@@ -121,16 +121,16 @@ if __name__ == '__main__':
     for x in ['black', 'red', 'green', 'brown',
               'blue', 'magenta', 'cyan', 'white']:
         color = colorize.Color(foreground=x)
-        print color, x, colorize.Color.NORMAL
+        print(color, x, colorize.Color.NORMAL)
 
     print '--'
     for x in ['black', 'red', 'green', 'brown',
               'blue', 'magenta', 'cyan', 'white']:
         color = colorize.Color(bold=True, foreground=x)
-        print color, x, colorize.Color.NORMAL
+        print(color, x, colorize.Color.NORMAL)
 
     print '--'
     for x in ['black', 'red', 'green', 'brown',
               'blue', 'magenta', 'cyan', 'white']:
         color = colorize.Color(background=x)
-        print color, x, colorize.Color.NORMAL
+        print(color, x, colorize.Color.NORMAL)
