@@ -29,7 +29,7 @@ APP_VERSION = '0.0.0.3'
 
 class Color(object):
     COLOR = '\033[{}m'
-    NORMAL = '\033[m'
+    NORMAL = COLOR.format('')
     colors = {
         'black':       '0',
         'red':         '1',
