@@ -1,2 +1,10 @@
 *~
+\#*
+\.\#*
 *.pyc
+*.egg-info/
+build/
+dist/
+venv/
+.coverage
+coverage.xml
