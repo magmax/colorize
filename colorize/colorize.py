@@ -29,7 +29,7 @@ APP_VERSION = '0.0.0.3'
 
 class Color(object):
     COLOR = '\033[{}m'
-    NORMAL = COLOR.format('')
+    NORMAL = '\033[m'
     colors = {
         'black':       '0',
         'red':         '1',
@@ -91,7 +91,7 @@ class Configuration(object):
         return '/etc/{0}/{0}.conf'.format(APP_NAME)
 
     def __parse_config(self, filename):
-        with file(filename) as fd:
+        with open(filename) as fd:
             reader = csv.reader(fd)
             for row in reader:
                 if not row or (row[0] and row[0][0] == '#'):
