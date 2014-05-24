@@ -34,7 +34,7 @@ run_integration_tests:
 
 run_acceptance_tests:
 	@echo Running Tests...
-	@nosetests -dv --exe --with-freshen tests/features
+	@nosetests -dv --exe tests/features
 
 clear_coverage:
 	@echo Cleaning previous coverage...
