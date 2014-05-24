@@ -3,6 +3,13 @@ Colorize
 
 Give some color to your (remote) TTY!!
 
+==============  ===============  =========  ============
+VERSION         DOWNLOADS        TESTS      COVERAGE
+==============  ===============  =========  ============
+|pip version|   |pip downloads|  |travis|   |coveralls|
+==============  ===============  =========  ============
+
+
 Usage
 -----
 
@@ -73,3 +80,25 @@ To emulate colordiff, just use this configuration file::
 
 That's enough :D
 
+.. Uso:
+
+
+.. |travis| image:: https://travis-ci.org/magmax/colorize.png
+  :target: `Travis`_
+  :alt: Travis results
+
+.. |coveralls| image:: https://coveralls.io/repos/magmax/colorize/badge.png
+  :target: `Coveralls`_
+  :alt: Coveralls results_
+
+.. |pip version| image:: https://pypip.in/v/colorize/badge.png
+    :target: `project`_
+    :alt: Latest PyPI version
+
+.. |pip downloads| image:: https://pypip.in/d/colorize/badge.png
+    :target: `project`_
+    :alt: Number of PyPI downloads
+
+.. _Travis: https://travis-ci.org/magmax/colorize
+.. _Coveralls: https://coveralls.io/r/magmax/colorize
+.. _project: https://pypi.python.org/pypi/colorize
