@@ -1,10 +1,41 @@
+MODULES=colorize
 
-all::
+all: pep8 flakes test
 
-tests::
-	./colorize/colorize.py nosetests -s -v --with-freshen tests
+test:: clear_coverage run_unit_tests run_integration_tests run_acceptance_tests
 
-testsbn::
-	nosetests -s -v --with-freshen tests
+unit_test:: run_unit_tests
 
-package::
+acceptance_test:: run_acceptance_tests
+
+analysis:: pep8 flakes
+
+pep8:
+	@echo Checking PEP8 style...
+	@pep8 --statistics ${MODULES} tests
+
+flakes:
+	@echo Searching for static errors...
+	@pyflakes ${MODULES}
+
+coveralls::
+	coveralls
+
+publish::
+	@python setup.py sdist upload
+
+run_unit_tests:
+	@echo Running Tests...
+	@nosetests -dv --exe --with-xcoverage --cover-package=${MODULES} --cover-tests tests/unit
+
+run_integration_tests:
+	@echo Running Tests...
+	@nosetests -dv --exe --with-xcoverage --cover-package=${MODULES} --cover-tests tests/integration
+
+run_acceptance_tests:
+	@echo Running Tests...
+	@nosetests -dv --exe --with-freshen tests/features
+
+clear_coverage:
+	@echo Cleaning previous coverage...
+	@coverage erase

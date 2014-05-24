@@ -122,7 +122,7 @@ class PrinterThread(Thread):
             line = self.fdin.readline()
             if line == '':
                 break
-            print self.replace(line.rstrip())
+            print(self.replace(line.rstrip()))
 
     def replace(self, line):
         result = line
