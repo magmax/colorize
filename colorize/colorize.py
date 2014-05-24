@@ -19,7 +19,6 @@ import os
 import sys
 import re
 import csv
-import thread
 import subprocess
 from threading import Thread
 
@@ -75,10 +74,12 @@ class Configuration(object):
         self.regexp = {}
 
     def process(self):
-        for filename in [self.configfile_currentdir(), self.configfile_home(), self.configfile_default()]:
+        for filename in [self.configfile_currentdir(),
+                         self.configfile_home(),
+                         self.configfile_default()]:
             if os.path.exists(filename):
                 self.__parse_config(filename)
-                break;
+                break
 
     def configfile_currentdir(self):
         return '.{}.conf'.format(APP_NAME)
@@ -147,7 +148,10 @@ class Colorize(object):
             colorizer = PrinterThread(sys.stdin, self.regexps)
             colorizer.flush()
         else:
-            process = subprocess.Popen(sys.argv[1:], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            process = subprocess.Popen(sys.argv[1:],
+                                       stdin=subprocess.PIPE,
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE)
             outpid = PrinterThread(process.stdout, self.regexps)
             errpid = PrinterThread(process.stderr, self.regexps)
             process.wait()
@@ -164,8 +168,9 @@ class Colorize(object):
     def replace(self, line):
         result = line
         for exp, color in self.regexps.items():
-            result, _ = re.subn(exp, color, result )
+            result, _ = re.subn(exp, color, result)
         return result
+
 
 def main():
     conf = Configuration()
