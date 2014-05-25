@@ -1,13 +1,14 @@
 import sys
-import colorize
+from .colorize import Configuration
+from .colorize import Colorize
 
 
 def main():
-    conf = colorize.Configuration()
+    conf = Configuration()
     conf.process()
-    c = colorize.Colorize(conf)
-    c.run()
-    sys.exit(c.return_code)
+    colorize = Colorize(conf)
+    colorize.run()
+    sys.exit(colorize.return_code)
 
 
 if __name__ == '__main__':
