@@ -7,7 +7,7 @@ class stdin_is_colorized_test(unittest.TestCase):
         self.sut = pexpect.spawn('python -m colorize echo FAILURE',
                                  timeout=1)
 
-        self.sut.expect_exact(b'\x1b[1;37;41mFAILURE\x1b[m')
+        self.sut.expect_exact(str(b'\x1b[1;37;41mFAILURE\x1b[m'))
         self.assertEquals(0, self.sut.wait())
 
     def test_returns_2_if_child_returns_2(self):
