@@ -170,14 +170,3 @@ class Colorize(object):
         for exp, color in self.regexps.items():
             result, _ = re.subn(exp, color, result)
         return result
-
-
-def main():
-    conf = Configuration()
-    conf.process()
-    colorize = Colorize(conf)
-    colorize.run()
-    sys.exit(colorize.return_code)
-
-if __name__ == '__main__':
-    main()

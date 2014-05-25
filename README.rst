@@ -10,21 +10,35 @@ VERSION         DOWNLOADS        TESTS      COVERAGE
 ==============  ===============  =========  ============
 
 
-Usage
------
+Installation and Usage
+----------------------
 
-Currently there are two way to use it:
+Two options: to install it in your system/project::
+
+    pip install colorize
+
+And you can use it with::
+
+    python -m colorize -h
+
+
+Or just `download the lastest zip`_ and use it with::
+
+   python colorize-X.Y.Z.zip -h
+
+
+Now, you have two ways to use it:
 
 Rendering the output
 ~~~~~~~~~~~~~~~~~~~~
 
 Just execute::
 
-    $ command to execute | colorize.py
+    $ command to execute | python -m colorize
 
 If you need to render both the stdout and the stderr::
 
-    $ command to execute |& colorize.py
+    $ command to execute |& python -m colorize
 
 This method works well with too long outputs
 
@@ -33,7 +47,7 @@ As runner
 
 Other way to use it:
 
-    $ colorize.py command to execute
+    $ python -m colorize command to execute
 
 This method can do disgusting things with too long outputs.
 

@@ -4,7 +4,7 @@ import pexpect
 
 class stdin_is_colorized_test(unittest.TestCase):
     def setUp(self):
-        self.sut = pexpect.spawn('./colorize/colorize.py', timeout=1)
+        self.sut = pexpect.spawn('python -m colorize', timeout=1)
 
     def test_normal_output(self):
         self.sut.sendline('example')
