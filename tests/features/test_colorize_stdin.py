@@ -24,5 +24,5 @@ class stdin_is_colorized_test(unittest.TestCase):
         self.sut.sendline('FAILURE')
         self.sut.sendeof()
 
-        self.sut.expect_exact('\x1b[1;37;41mFAILURE\x1b[m')
+        self.sut.expect_exact('\x1b[1;37;41mFAILURE\x1b[m'.encode('utf-8'))
         self.assertEquals(0, self.sut.wait())
