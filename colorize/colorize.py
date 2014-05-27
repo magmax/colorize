@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Copyright (C) 2012 Miguel Angel Garcia <miguelangel.garcia@gmail.com>
+# Copyright (C) 2012-2014 Miguel Angel Garcia <miguelangel.garcia@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,10 +26,6 @@ from threading import Thread
 from . import __app_name__
 
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(message)s',
-    datefmt='%m-%d %H:%M:%S',)
 logger = logging.getLogger('colorize.main')
 shlogger = logging.getLogger('colorize.shell')
 
@@ -119,15 +115,13 @@ class Configuration(object):
                 self.regexp[regexp] = color
 
 
-class PrinterThread(Thread):
+class Printer(object):
     def __init__(self, fdin, regexps, log_fn):
-        super(PrinterThread, self).__init__()
         self.fdin = fdin
         self.regexps = regexps
         self.log_fn = log_fn
-        self.start()
 
-    def run(self):
+    def process(self):
         while not self.fdin.closed:
             line = self.fdin.readline()
             if isinstance(line, bytes):
@@ -141,6 +135,16 @@ class PrinterThread(Thread):
         for exp, color in self.regexps.items():
             result, _ = re.subn(exp, color, result)
         return result
+
+
+class PrinterThread(Thread):
+    def __init__(self, fdin, regexps, log_fn):
+        super(PrinterThread, self).__init__()
+        self._printer = Printer(fdin, regexps, log_fn)
+        self.start()
+
+    def run(self):
+        self._printer.process()
 
     def flush(self):
         Thread.join(self, 1)
@@ -156,8 +160,11 @@ class Colorize(object):
         self.compile_regexps()
 
         if not command:
-            colorizer = PrinterThread(sys.stdin, self.regexps, shlogger.info)
-            colorizer.flush()
+            colorizer = Printer(sys.stdin, self.regexps, shlogger.info)
+            try:
+                colorizer.process()
+            except KeyboardInterrupt:
+                logger.error('Interrupted by user')
             return
 
         process = subprocess.Popen(command,
