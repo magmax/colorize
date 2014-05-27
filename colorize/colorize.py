@@ -20,11 +20,18 @@ import sys
 import re
 import csv
 import subprocess
+import logging
 from threading import Thread
 
-APP_NAME = 'colorize'
-APP_DESC = 'Colorizes the output of any command'
-APP_VERSION = '0.0.0.3'
+from . import __app_name__
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(message)s',
+    datefmt='%m-%d %H:%M:%S',)
+logger = logging.getLogger('colorize.main')
+shlogger = logging.getLogger('colorize.shell')
 
 
 class Color(object):
@@ -82,13 +89,14 @@ class Configuration(object):
                 break
 
     def configfile_currentdir(self):
-        return '.{}.conf'.format(APP_NAME)
+        return '.{}.conf'.format(__app_name__)
 
     def configfile_home(self):
-        return os.path.expanduser('~/.config/{0}/{0}.conf'.format(APP_NAME))
+        return os.path.expanduser(
+            '~/.config/{0}/{0}.conf'.format(__app_name__))
 
     def configfile_default(self):
-        return '/etc/{0}/{0}.conf'.format(APP_NAME)
+        return '/etc/{0}/{0}.conf'.format(__app_name__)
 
     def __parse_config(self, filename):
         with open(filename) as fd:
@@ -112,10 +120,11 @@ class Configuration(object):
 
 
 class PrinterThread(Thread):
-    def __init__(self, fdin, regexps):
+    def __init__(self, fdin, regexps, log_fn):
         super(PrinterThread, self).__init__()
         self.fdin = fdin
         self.regexps = regexps
+        self.log_fn = log_fn
         self.start()
 
     def run(self):
@@ -125,7 +134,7 @@ class PrinterThread(Thread):
                 line = line.decode('utf-8')
             if line == '':
                 break
-            print(self.replace(line.rstrip()))
+            self.log_fn(self.replace(line.rstrip()))
 
     def replace(self, line):
         result = line
@@ -143,23 +152,24 @@ class Colorize(object):
         self.regexps = {}
         self.return_code = 0
 
-    def run(self):
+    def process_command(self, command):
         self.compile_regexps()
 
-        if len(sys.argv) == 1:
-            colorizer = PrinterThread(sys.stdin, self.regexps)
+        if not command:
+            colorizer = PrinterThread(sys.stdin, self.regexps, shlogger.info)
             colorizer.flush()
-        else:
-            process = subprocess.Popen(sys.argv[1:],
-                                       stdin=subprocess.PIPE,
-                                       stdout=subprocess.PIPE,
-                                       stderr=subprocess.PIPE)
-            outpid = PrinterThread(process.stdout, self.regexps)
-            errpid = PrinterThread(process.stderr, self.regexps)
-            process.wait()
-            outpid.flush()
-            errpid.flush()
-            self.return_code = process.returncode
+            return
+
+        process = subprocess.Popen(command,
+                                   stdin=subprocess.PIPE,
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
+        outpid = PrinterThread(process.stdout, self.regexps, shlogger.info)
+        errpid = PrinterThread(process.stderr, self.regexps, shlogger.error)
+        process.wait()
+        outpid.flush()
+        errpid.flush()
+        self.return_code = process.returncode
 
     def compile_regexps(self):
         for exp, color in self.regexp.items():
