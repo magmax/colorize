@@ -121,10 +121,10 @@ class PrinterThread(Thread):
     def run(self):
         while not self.fdin.closed:
             line = self.fdin.readline()
-            if line == '':
-                break
             if isinstance(line, bytes):
                 line = line.decode('utf-8')
+            if line == '':
+                break
             print(self.replace(line.rstrip()))
 
     def replace(self, line):
