@@ -116,3 +116,4 @@ That's enough :D
 .. _Travis: https://travis-ci.org/magmax/colorize
 .. _Coveralls: https://coveralls.io/r/magmax/colorize
 .. _project: https://pypi.python.org/pypi/colorize
+.. _download the lastest zip: https://pypi.python.org/pypi/colorize
