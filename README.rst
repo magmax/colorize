@@ -9,6 +9,8 @@ VERSION         DOWNLOADS        TESTS      COVERAGE
 |pip version|   |pip downloads|  |travis|   |coveralls|
 ==============  ===============  =========  ============
 
+And it is free. Checkout the `Source code`_.
+
 
 Installation and Usage
 ----------------------
@@ -117,3 +119,4 @@ That's enough :D
 .. _Coveralls: https://coveralls.io/r/magmax/colorize
 .. _project: https://pypi.python.org/pypi/colorize
 .. _download the lastest zip: https://pypi.python.org/pypi/colorize
+.. _Source code: https://github.com/magmax/colorize

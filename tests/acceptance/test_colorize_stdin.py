@@ -9,21 +9,16 @@ class stdin_is_colorized_test(unittest.TestCase):
 
     def test_normal_output(self):
         self.sut.sendline('example')
-        self.sut.sendeof()
 
-        self.sut.expect_exact('example')
-        self.assertEquals(0, self.sut.wait())
+        self.sut.expect_exact('example', timeout=1)
 
     def test_case_is_important(self):
         self.sut.sendline('failure')
-        self.sut.sendeof()
 
-        self.sut.expect_exact('failure')
-        self.assertEquals(0, self.sut.wait())
+        self.sut.expect_exact('failure', timeout=1)
 
     def test_failure_is_highlighted(self):
         self.sut.sendline('FAILURE')
-        self.sut.sendeof()
 
-        self.sut.expect_exact('\x1b[1;37;41mFAILURE\x1b[m')
-        self.assertEquals(0, self.sut.wait())
+        self.sut.expect_exact('\x1b[1;37;41mFAILURE\x1b[m',
+                              timeout=1)
