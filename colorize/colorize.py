@@ -52,23 +52,23 @@ class Color(object):
     def __str__(self):
         properties = []
 
-        properties.append(self.__getBoldString())
+        properties.append(self._getBoldString())
         if self.foreground:
-            properties.append(self.__getForegroundString())
+            properties.append(self._getForegroundString())
         if self.background:
-            properties.append(self.__getBackgroundString())
+            properties.append(self._getBackgroundString())
 
         return self.COLOR.format(';'.join(properties))
 
-    def __getBoldString(self):
+    def _getBoldString(self):
         if self.bold:
             return '1'
         return '0'
 
-    def __getForegroundString(self):
+    def _getForegroundString(self):
         return '3' + self.colors[self.foreground]
 
-    def __getBackgroundString(self):
+    def _getBackgroundString(self):
         return '4' + self.colors[self.background]
 
 
@@ -81,7 +81,7 @@ class Configuration(object):
                          self.configfile_home(),
                          self.configfile_default()]:
             if os.path.exists(filename):
-                self.__parse_config(filename)
+                self._parse_config(filename)
                 break
 
     def configfile_currentdir(self):
@@ -94,7 +94,7 @@ class Configuration(object):
     def configfile_default(self):
         return '/etc/{0}/{0}.conf'.format(__app_name__)
 
-    def __parse_config(self, filename):
+    def _parse_config(self, filename):
         with open(filename) as fd:
             reader = csv.reader(fd)
             for row in reader:
@@ -128,9 +128,9 @@ class Printer(object):
                 line = line.decode('utf-8')
             if line == '':
                 break
-            self.log_fn(self.replace(line.rstrip()))
+            self.log_fn(self._replace(line.rstrip()))
 
-    def replace(self, line):
+    def _replace(self, line):
         result = line
         for exp, color in self.regexps.items():
             result, _ = re.subn(exp, color, result)
@@ -138,13 +138,13 @@ class Printer(object):
 
 
 class PrinterThread(Thread):
-    def __init__(self, fdin, regexps, log_fn):
+    def __init__(self, fn):
         super(PrinterThread, self).__init__()
-        self._printer = Printer(fdin, regexps, log_fn)
+        self._fn = fn
         self.start()
 
     def run(self):
-        self._printer.process()
+        self._fn()
 
     def flush(self):
         Thread.join(self, 1)
@@ -160,9 +160,9 @@ class Colorize(object):
         self.compile_regexps()
 
         if not command:
-            colorizer = Printer(sys.stdin, self.regexps, shlogger.info)
+            printer = Printer(sys.stdin, self.regexps, shlogger.info)
             try:
-                colorizer.process()
+                printer.process()
             except KeyboardInterrupt:
                 logger.error('Interrupted by user')
             return
@@ -171,8 +171,10 @@ class Colorize(object):
                                    stdin=subprocess.PIPE,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
-        outpid = PrinterThread(process.stdout, self.regexps, shlogger.info)
-        errpid = PrinterThread(process.stderr, self.regexps, shlogger.error)
+        outprinter = Printer(process.stdout, self.regexps, shlogger.info)
+        errprinter = Printer(process.stderr, self.regexps, shlogger.error)
+        outpid = PrinterThread(outprinter.process)
+        errpid = PrinterThread(errprinter.process)
         process.wait()
         outpid.flush()
         errpid.flush()
@@ -183,9 +185,3 @@ class Colorize(object):
             regexp = '({})'.format(exp)
             compiled = re.compile(regexp)
             self.regexps[compiled] = '{}\\1{}'.format(color, Color.NORMAL)
-
-    def replace(self, line):
-        result = line
-        for exp, color in self.regexps.items():
-            result, _ = re.subn(exp, color, result)
-        return result

@@ -116,6 +116,13 @@ class ColorTests(unittest.TestCase):
 
         self.assertEquals(current, expected)
 
+    def test_getBrownBackground(self):
+        sut = colorize.Color(background='brown')
+        expected = '\033[0;43m'
+        current = str(sut)
+
+        self.assertEquals(current, expected)
+
 
 if __name__ == '__main__':
     for x in ['black', 'red', 'green', 'brown',
