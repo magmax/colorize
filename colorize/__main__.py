@@ -30,7 +30,7 @@ def main():
     conf = Configuration()
     conf.process()
     colorize = Colorize(conf)
-    colorize.process_command(args.command)
+    colorize.process(args.command)
     sys.exit(colorize.return_code)
 
 

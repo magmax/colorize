@@ -156,16 +156,13 @@ class Colorize(object):
         self.regexps = {}
         self.return_code = 0
 
+    def process(self, command):
+        if command:
+            return self.process_command(command)
+        self.process_stdin()
+
     def process_command(self, command):
         self.compile_regexps()
-
-        if not command:
-            printer = Printer(sys.stdin, self.regexps, shlogger.info)
-            try:
-                printer.process()
-            except KeyboardInterrupt:
-                logger.error('Interrupted by user')
-            return
 
         process = subprocess.Popen(command,
                                    stdin=subprocess.PIPE,
@@ -179,6 +176,15 @@ class Colorize(object):
         outpid.flush()
         errpid.flush()
         self.return_code = process.returncode
+
+    def process_stdin(self):
+        self.compile_regexps()
+
+        printer = Printer(sys.stdin, self.regexps, shlogger.info)
+        try:
+            printer.process()
+        except KeyboardInterrupt:
+            logger.error('Interrupted by user')
 
     def compile_regexps(self):
         for exp, color in self.regexp.items():
