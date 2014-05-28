@@ -7,7 +7,7 @@ from tests.utils import FakeIO
 class PrinterTests(unittest.TestCase):
     def test_reads_a_line_and_prints_it(self):
         line = 'foo'
-        stdin = FakeIO(line.decode('utf-8'))
+        stdin = FakeIO(line)
         with doublex.Mock() as log:
             log.log(line)
 
