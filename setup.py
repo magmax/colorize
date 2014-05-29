@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup, find_packages
-from colorize import __version__, __description__
+from colorize import APP
 
 
 def read_description():
@@ -10,8 +10,8 @@ def read_description():
 
 
 setup(name='colorize',
-      version=__version__,
-      description=__description__,
+      version=APP.version,
+      description=APP.description,
       long_description=read_description(),
       classifiers=[
           'Development Status :: 5 - Production/Stable',
