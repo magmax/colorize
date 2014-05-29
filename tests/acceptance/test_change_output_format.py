@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+import time
 import unittest
 import pexpect
 
@@ -27,3 +28,16 @@ class format_the_output(unittest.TestCase):
 
         self.sut.expect_exact('bfoob')
         self.assertEquals(0, self.sut.wait())
+
+    def test_format_date(self):
+        format = '%Y-%m-%d'
+        self.sut = pexpect.spawnu(
+            "python -m colorize -f '%(asctime)s'"
+            " --date-format='{f}'"
+            " -- echo foo".format(f=format),
+            timeout=3)
+
+        output = self.sut.read()
+        parsed = time.strptime(output.strip(), format)
+        self.assertEquals(time.strftime(format),
+                          time.strftime(format, parsed))

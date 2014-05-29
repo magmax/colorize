@@ -23,7 +23,7 @@ import subprocess
 import logging
 from threading import Thread
 
-from . import __app_name__
+from . import APP
 
 
 logger = logging.getLogger('colorize.main')
@@ -85,14 +85,14 @@ class Configuration(object):
                 break
 
     def configfile_currentdir(self):
-        return '.{}.conf'.format(__app_name__)
+        return '.{}.conf'.format(APP.name)
 
     def configfile_home(self):
         return os.path.expanduser(
-            '~/.config/{0}/{0}.conf'.format(__app_name__))
+            '~/.config/{0}/{0}.conf'.format(APP.name))
 
     def configfile_default(self):
-        return '/etc/{0}/{0}.conf'.format(__app_name__)
+        return '/etc/{0}/{0}.conf'.format(APP.name)
 
     def _parse_config(self, filename):
         with open(filename) as fd:

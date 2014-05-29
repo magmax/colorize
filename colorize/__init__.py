@@ -1,3 +1,8 @@
-__version__ = "0.2.1"
-__app_name__ = "colorize"
-__description__ = "Command line utility to colorize other commands output",
+__version__ = "1.0.0"
+
+
+class APP(object):
+    name = "colorize"
+    program = 'python -m colorize'
+    version = __version__
+    description = "Command line utility to colorize other commands output"

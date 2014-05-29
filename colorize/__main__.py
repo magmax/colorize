@@ -4,13 +4,12 @@ import logging
 
 from .colorize import Configuration
 from .colorize import Colorize
-from . import __description__
+from . import APP
 
 
 def logging_setup(args):
     def set_format(logger, format, level=logging.INFO):
-        datefmt = '%m-%d %H:%M:%S'
-        formatter = logging.Formatter(format, datefmt)
+        formatter = logging.Formatter(format, args.datefmt)
         handler = logging.StreamHandler()
         handler.setFormatter(formatter)
         logger.addHandler(handler)
@@ -23,11 +22,17 @@ def logging_setup(args):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__description__)
+    parser = argparse.ArgumentParser(
+        prog=APP.program,
+        description=APP.description,
+        )
     parser.add_argument('command', nargs='*',
                         help='Command to be executed')
     parser.add_argument('-f', '--format', default='%(message)s',
                         help='Configures both stdout and stderr')
+    parser.add_argument('--date-format', dest="datefmt",
+                        default='%m-%d %H:%M:%S',
+                        help='Set the date format')
 
     args = parser.parse_args()
 
