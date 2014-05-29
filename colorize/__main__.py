@@ -8,10 +8,18 @@ from . import __description__
 
 
 def logging_setup(args):
-    logging.basicConfig(
-        level=logging.INFO,
-        format=args.format,
-        datefmt='%m-%d %H:%M:%S',)
+    def set_format(logger, format, level=logging.INFO):
+        datefmt = '%m-%d %H:%M:%S'
+        formatter = logging.Formatter(format, datefmt)
+        handler = logging.StreamHandler()
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        logger.setLevel(level)
+    logger = logging.getLogger('colorize.main')
+    shlogger = logging.getLogger('colorize.shell')
+
+    set_format(logger, '%(message)s')
+    set_format(shlogger, args.format)
 
 
 def main():
@@ -20,8 +28,6 @@ def main():
                         help='Command to be executed')
     parser.add_argument('-f', '--format', default='%(message)s',
                         help='Configures both stdout and stderr')
-    parser.add_argument('--format-out', default='%(message)s',
-                        help='Configures the output format')
 
     args = parser.parse_args()
 
