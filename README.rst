@@ -144,4 +144,4 @@ That's enough :D
 .. _project: https://pypi.python.org/pypi/colorize
 .. _download the lastest zip: https://pypi.python.org/pypi/colorize
 .. _Source code: https://github.com/magmax/colorize
--- _Any other output format allowed by logging: https://docs.python.org/3.5/library/logging.html#logrecord-attributes
+.. _Any other output format allowed by logging: https://docs.python.org/3.5/library/logging.html#logrecord-attributes
