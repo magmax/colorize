@@ -26,15 +26,15 @@ publish::
 
 run_unit_tests:
 	@echo Running Tests...
-	@nosetests -dv --exe --with-xcoverage --cover-package=${MODULES} --cover-tests tests/unit
+	@nosetests -dv --exe --with-xcoverage --cover-package=${MODULES} --cover-tests tests/unit  ${NOSE_OPTS}
 
 run_integration_tests:
 	@echo Running Tests...
-	@nosetests -dv --exe --with-xcoverage --cover-package=${MODULES} --cover-tests tests/integration
+	@nosetests -dv --exe --with-xcoverage --cover-package=${MODULES} --cover-tests tests/integration  ${NOSE_OPTS}
 
 run_acceptance_tests:
 	@echo Running Tests...
-	@nosetests -dv --exe tests/acceptance
+	@nosetests -dv --exe tests/acceptance  ${NOSE_OPTS}
 
 clear_coverage:
 	@echo Cleaning previous coverage...
