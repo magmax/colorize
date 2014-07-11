@@ -3,11 +3,11 @@ Colorize
 
 Give some color to your (remote) TTY!!
 
-==============  ===============  =========  ============
-VERSION         DOWNLOADS        TESTS      COVERAGE
-==============  ===============  =========  ============
-|pip version|   |pip downloads|  |travis|   |coveralls|
-==============  ===============  =========  ============
+==============  ===============  =========  ============  =======
+VERSION         DOWNLOADS        TESTS      COVERAGE      WHEEL
+==============  ===============  =========  ============  =======
+|pip version|   |pip downloads|  |travis|   |coveralls|   |wheel|
+==============  ===============  =========  ============  =======
 
 And it is free. Checkout the `Source code`_.
 
@@ -138,6 +138,10 @@ That's enough :D
 .. |pip downloads| image:: https://pypip.in/d/colorize/badge.png
     :target: `project`_
     :alt: Number of PyPI downloads
+
+.. |wheel| image:: https://pypip.in/wheel/colorize/badge.png
+    :target: `project`_
+    :alt: Wheel Status
 
 .. _Travis: https://travis-ci.org/magmax/colorize
 .. _Coveralls: https://coveralls.io/r/magmax/colorize
