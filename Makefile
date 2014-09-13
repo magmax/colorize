@@ -18,8 +18,7 @@ coveralls::
 	coveralls
 
 publish::
-	@python setup.py sdist bdist_egg bdist_wheel
-#	@zip dist/colorize-$(shell python -c "import colorize; print colorize.__version__").zip colorize __main__.py
+	@python setup.py sdist bdist_egg bdist_wheel upload
 
 run_unit_tests:
 	@echo Running Tests...
