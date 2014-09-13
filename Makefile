@@ -18,7 +18,7 @@ coveralls::
 	coveralls
 
 publish::
-	@python setup.py sdist --formats gztar bdist_wheel
+	@python setup.py sdist --formats gztar bdist_wheel upload
 	@zip dist/colorize-$(shell python -c "import colorize; print colorize.__version__").zip colorize __main__.py
 
 run_unit_tests:
