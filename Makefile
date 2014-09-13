@@ -1,6 +1,6 @@
 MODULES=colorize
 
-all: pep8 flakes test
+all: flakes test
 
 test:: clear_coverage run_unit_tests run_integration_tests run_acceptance_tests
 
@@ -10,19 +10,16 @@ acceptance_test:: run_acceptance_tests
 
 analysis:: pep8 flakes
 
-pep8:
-	@echo Checking PEP8 style...
-	@pep8 --statistics ${MODULES} tests
-
 flakes:
 	@echo Searching for static errors...
-	@pyflakes ${MODULES}
+	@flake8 --statistics --count ${MODULES}
 
 coveralls::
 	coveralls
 
 publish::
-	@python setup.py sdist --formats zip,gztar bdist_wheel upload
+	@python setup.py sdist --formats gztar bdist_wheel
+	@zip dist/colorize-$(shell python -c "import colorize; print colorize.__version__").zip colorize __main__.py
 
 run_unit_tests:
 	@echo Running Tests...
