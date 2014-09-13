@@ -36,4 +36,12 @@ setup(name='colorize',
       zip_safe=False,
       install_requires=[
       ],
-      )
+      entry_points={
+          'setuptools.installation': [
+              "eggsecutable = colorize.bar:foo"
+          ]
+      },
+      data_files=[
+          ('', ['__main__.py', ]),
+      ],
+  )

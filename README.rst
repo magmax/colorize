@@ -24,9 +24,9 @@ And you can use it with::
     python -m colorize -h
 
 
-Or just `download the lastest zip`_ and use it with::
+Or just `download the lastest egg`_ and use it with::
 
-   python colorize-X.Y.Z.zip -h
+   python colorize-X.Y.Z-pyN.M.egg -h
 
 
 Now, you have two ways to use it:
@@ -146,6 +146,6 @@ That's enough :D
 .. _Travis: https://travis-ci.org/magmax/colorize
 .. _Coveralls: https://coveralls.io/r/magmax/colorize
 .. _project: https://pypi.python.org/pypi/colorize
-.. _download the lastest zip: https://pypi.python.org/pypi/colorize
+.. _download the lastest egg: https://pypi.python.org/pypi/colorize#downloads
 .. _Source code: https://github.com/magmax/colorize
 .. _Any other output format allowed by logging: https://docs.python.org/3.5/library/logging.html#logrecord-attributes
