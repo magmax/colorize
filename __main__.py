@@ -3,4 +3,3 @@
 from colorize.__main__ import main
 
 main()
-

@@ -15,34 +15,33 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import sys
-import re
 import csv
-import subprocess
 import logging
+import os
+import re
+import subprocess
+import sys
 from threading import Thread
 
 from . import APP
 
-
-logger = logging.getLogger('colorize.main')
-shlogger = logging.getLogger('colorize.shell')
+logger = logging.getLogger("colorize.main")
+shlogger = logging.getLogger("colorize.shell")
 
 
 class Color(object):
-    COLOR = '\033[{}m'
-    NORMAL = COLOR.format('')
+    COLOR = "\033[{}m"
+    NORMAL = COLOR.format("")
     colors = {
-        'black':       '0',
-        'red':         '1',
-        'green':       '2',
-        'brown':       '3',
-        'blue':        '4',
-        'magenta':     '5',
-        'cyan':        '6',
-        'white':       '7',
-        }
+        "black": "0",
+        "red": "1",
+        "green": "2",
+        "brown": "3",
+        "blue": "4",
+        "magenta": "5",
+        "cyan": "6",
+        "white": "7",
+    }
 
     def __init__(self, bold=False, foreground=None, background=None):
         self.bold = bold
@@ -58,18 +57,18 @@ class Color(object):
         if self.background:
             properties.append(self._getBackgroundString())
 
-        return self.COLOR.format(';'.join(properties))
+        return self.COLOR.format(";".join(properties))
 
     def _getBoldString(self):
         if self.bold:
-            return '1'
-        return '0'
+            return "1"
+        return "0"
 
     def _getForegroundString(self):
-        return '3' + self.colors[self.foreground]
+        return "3" + self.colors[self.foreground]
 
     def _getBackgroundString(self):
-        return '4' + self.colors[self.background]
+        return "4" + self.colors[self.background]
 
 
 class Configuration(object):
@@ -77,36 +76,37 @@ class Configuration(object):
         self.regexp = {}
 
     def process(self):
-        for filename in [self.configfile_currentdir(),
-                         self.configfile_home(),
-                         self.configfile_default()]:
+        for filename in [
+            self.configfile_currentdir(),
+            self.configfile_home(),
+            self.configfile_default(),
+        ]:
             if os.path.exists(filename):
                 self._parse_config(filename)
                 break
 
     def configfile_currentdir(self):
-        return '.{}.conf'.format(APP.name)
+        return ".{}.conf".format(APP.name)
 
     def configfile_home(self):
-        return os.path.expanduser(
-            '~/.config/{0}/{0}.conf'.format(APP.name))
+        return os.path.expanduser("~/.config/{0}/{0}.conf".format(APP.name))
 
     def configfile_default(self):
-        return '/etc/{0}/{0}.conf'.format(APP.name)
+        return "/etc/{0}/{0}.conf".format(APP.name)
 
     def _parse_config(self, filename):
         with open(filename) as fd:
             reader = csv.reader(fd)
             for row in reader:
-                if not row or (row[0] and row[0][0] == '#'):
+                if not row or (row[0] and row[0][0] == "#"):
                     continue
 
-                row += 4*[None]
+                row += 4 * [None]
 
                 regexp = row[0]
                 color = Color()
                 if row[1]:
-                    color.bold = row[1].strip().lower() in ['1', 'true']
+                    color.bold = row[1].strip().lower() in ["1", "true"]
                 if row[2]:
                     color.foreground = row[2].strip()
                 if row[3]:
@@ -125,8 +125,8 @@ class Printer(object):
         while not self.fdin.closed:
             line = self.fdin.readline()
             if isinstance(line, bytes):
-                line = line.decode('utf-8')
-            if line == '':
+                line = line.decode("utf-8")
+            if line == "":
                 break
             self.log_fn(self._replace(line.rstrip()))
 
@@ -164,10 +164,9 @@ class Colorize(object):
     def process_command(self, command):
         self.compile_regexps()
 
-        process = subprocess.Popen(command,
-                                   stdin=subprocess.PIPE,
-                                   stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE)
+        process = subprocess.Popen(
+            command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
         outprinter = Printer(process.stdout, self.regexps, shlogger.info)
         errprinter = Printer(process.stderr, self.regexps, shlogger.error)
         outpid = PrinterThread(outprinter.process)
@@ -184,10 +183,10 @@ class Colorize(object):
         try:
             printer.process()
         except KeyboardInterrupt:
-            logger.error('Interrupted by user')
+            logger.error("Interrupted by user")
 
     def compile_regexps(self):
         for exp, color in self.regexp.items():
-            regexp = '({})'.format(exp)
+            regexp = "({})".format(exp)
             compiled = re.compile(regexp)
-            self.regexps[compiled] = '{}\\1{}'.format(color, Color.NORMAL)
+            self.regexps[compiled] = "{}\\1{}".format(color, Color.NORMAL)

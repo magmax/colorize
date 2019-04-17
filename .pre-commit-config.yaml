@@ -1,0 +1,19 @@
+repos:
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v4.3.4
+    hooks:
+    - id: isort
+  - repo: https://github.com/ambv/black
+    rev: stable
+    hooks:
+    - id: black
+      language_version: python3
+      args:
+        - -l
+        - "90"
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v1.3.0
+    hooks:
+    - id: name-tests-test
+      exclude: "utils.py"
+    - id: flake8
