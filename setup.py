@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from setuptools import find_packages, setup
+from setuptools import setup
 
 from colorize import APP
 
@@ -18,8 +18,6 @@ setup(
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.2",
-        "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
@@ -34,10 +32,6 @@ setup(
     author_email="miguelangel.garcia@gmail.com",
     url="https://github.com/magmax/colorize",
     license="MIT",
-    packages=find_packages(exclude=["tests"]),
-    include_package_data=True,
-    zip_safe=False,
-    install_requires=[],
-    entry_points={"setuptools.installation": ["eggsecutable = colorize.bar:foo"]},
-    scripts=["bin/colorize"],
+    packages=["colorize"],
+    entry_points={"console_scripts": ["colorize = colorize.__main__:main"]},
 )
