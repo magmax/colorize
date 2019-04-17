@@ -24,11 +24,6 @@ And you can use it with::
     python -m colorize -h
 
 
-Or just `download the lastest egg`_ and use it with::
-
-   python colorize-X.Y.Z-pyN.M.egg -h
-
-
 Now, you have two ways to use it:
 
 Rendering the output
@@ -96,6 +91,14 @@ The format for this file is very easy: it is a CSV file with next fields::
       "^=+$"                                   , true        , white            , black
       "^=+$"                                   , 0           , red              , white
       "^=+$"                                   , false       , brown            , magenta
+
+For example, you can configure it to colorize the `go test` output::
+
+    "^PASS", 1, white, green
+    "^ok", 1, white, green
+    "^FAIL", 1, white, red
+    "^--- FAIL:", 1, white, red
+
 
 Available colors:
 
