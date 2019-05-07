@@ -8,6 +8,7 @@ python:
 
 install:
   - pip install -r requirements-dev.txt
+  - pip install codecov
   - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then pip install unittest2; fi
   - python setup.py install
 
@@ -20,6 +21,7 @@ script:
 
 after_success:
   - make coveralls
+  - codecov
 
 notifications:
   email:
