@@ -134,15 +134,15 @@ That's enough :D
   :target: `Coveralls`_
   :alt: Coveralls results_
 
-.. |pip version| image:: https://pypip.in/v/colorize/badge.png
+.. |pip version| image:: https://img.shields.io/pypi/v/colorize.svg
     :target: `project`_
     :alt: Latest PyPI version
 
-.. |pip downloads| image:: https://pypip.in/d/colorize/badge.png
+.. |pip downloads| image:: https://img.shields.io/pypi/dm/colorize.svg
     :target: `project`_
     :alt: Number of PyPI downloads
 
-.. |wheel| image:: https://pypip.in/wheel/colorize/badge.png
+.. |wheel| image:: https://img.shields.io/pypi/wheel/colorize.svg
     :target: `project`_
     :alt: Wheel Status
 
